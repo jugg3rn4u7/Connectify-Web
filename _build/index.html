@@ -1,0 +1,65 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-csp="" ng-app="ConnectifyWeb"> <!--<![endif]-->
+
+	<head>
+
+		<base href="#">
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Connectify</title>
+		<meta name="description" content="Social Networking app - Connectify">
+
+		<!-- mobile meta -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+
+		<!--[if IE]>
+			<link rel="shortcut icon" href="favicon.ico">
+		<![endif]-->
+		<!-- or, set /favicon.ico for IE10 win -->
+		<meta name="msapplication-TileColor" content="#f01d4f">
+
+		<!-- Vendors -->
+		<!-- Twitter Bootstrap 3.x, Font-Awesome, Custom CSS -->
+		<link rel="stylesheet" href="css/full_css.css"/>
+
+	</head>
+
+	<body class="main-wrapper">
+	
+		<!--[if lt IE 8]>
+		    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<!-- Navigation -->
+		<main-nav></main-nav>
+
+		<!-- Main view for templates -->
+		<div data-ng-view=""></div>
+
+	</body>
+
+	<!-- Vendors -->
+	<!-- Non-angular libraries -->
+	<script src="js/nonangularlibs.js"></script>
+
+	<!-- Angular external libraries for application -->
+	<script src="js/angularlibs.js"></script>
+	
+	<script src="js/libs.js"></script>
+
+	<!-- Application sections -->
+	<script src="js/mainapp.js"></script>
+
+	<!-- Angular components -->
+	<script src="js/appcomponents.js"></script>
+
+	<!-- templates from $templateCache -->
+	<script type="text/javascript" src="js/templates.js"></script>
+
+</html>
