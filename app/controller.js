@@ -81,13 +81,14 @@
 
 
     /**
-     * Load some data
+     * Hello World message
      * @return {Object} Returned object
      */
-    // QueryService.query('GET', 'posts', {}, {})
-    //   .then(function(ovocie) {
-    //     self.ovocie = ovocie.data;
-    //   });
+    QueryService.query('GET', 'hello', {}, {})
+      .then(function(ovocie) {
+        self.ovocie = ovocie.data;
+        console.log("Hello response: ", self.ovocie);
+      });
   }
 
 })();

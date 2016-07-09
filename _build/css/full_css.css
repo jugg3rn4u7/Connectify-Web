@@ -1364,40 +1364,17 @@ td.visible-print,th.visible-print{display:table-cell!important}
 tr.hidden-print{display:none!important}
 td.hidden-print,th.hidden-print{display:none!important}
 }
-body{-webkit-font-smoothing:antialiased;-webkit-overflow-scrolling:touch;background-color:#FFF}
-h1,h2,h3,h4,h5,h6{font-family:Raleway;font-weight:300;color:#333}
-p{line-height:28px;margin-bottom:25px}
-.centered{text-align:center}
-a{color:#f85c37;word-wrap:break-word;-webkit-transition:color .1s ease-in,background .1s ease-in;-moz-transition:color .1s ease-in,background .1s ease-in;-ms-transition:color .1s ease-in,background .1s ease-in;-o-transition:color .1s ease-in,background .1s ease-in;transition:color .1s ease-in,background .1s ease-in}
-a:focus,a:hover{color:#7b7b7b;text-decoration:none;outline:0}
-a:after,a:before{-webkit-transition:color .1s ease-in,background .1s ease-in;-moz-transition:color .1s ease-in,background .1s ease-in;-ms-transition:color .1s ease-in,background .1s ease-in;-o-transition:color .1s ease-in,background .1s ease-in;transition:color .1s ease-in,background .1s ease-in}
-hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
-#section-topbar{position:fixed;top:0;left:0;right:0;z-index:10000;overflow:visible;font:400 16px/24px 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif}
-#section-topbar a{color:#fff}
-#topbar-inner{background:#111;line-height:0;text-align:center}
-#section-topbar ul#nav{display:inline-block;position:relative;margin:0;padding:0;border-right:1px solid #222;zoom:1}
-#section-topbar ul#nav>li{display:block;float:left;padding:0}
-#section-topbar ul#nav a{display:block;font:400 11px/18px "Helvetica Neue",Helvetica,Arial,sans-serif;text-decoration:none;padding:18px 20px 18px 20px;border-left:1px solid #222}
-#section-topbar ul#nav a:hover{background:#222;text-decoration:none;border-left:1px solid #111}
-#section-topbar ul#nav .active a{background:#4ba;border-left:1px solid #111}
-#section-topbar ul#nav .active a:hover{background:#4ba}
-#section-topbar i{font-size:25px}
-.subnav{margin:0;top:60px;z-index:1020;background-color:#6f5499;padding:8px 0 0 0}
-.subnav.affix{position:fixed;top:0;width:100%;z-index:10}
-.headerwrap{margin-top:60px;padding-top:60px;text-align:center;width:100%;color:#fff}
-#footwrap{background:#2f2f2f;padding-top:50px;padding-bottom:50px}
-#footwrap p{color:#fff}
-#footwrap h5{color:#fff}
-#footwrap t{font-weight:700}
-#footwrap i{padding-right:8px;color:#1abc9c}
-#c{background:#222;padding-top:15px;text-align:right}
-#c p{color:#fff}
-.desc{padding-top:50px}
-.desc p{color:#2f2f2f}
-.desc t{color:#34495e;font-weight:700}
-.desc imp{padding:6px;color:#fff;background:#34495e}
-.desc more{color:#95a5a6}
-sm{font-size:12px}
+/*!
+ * Connectify v0.1.1
+ *
+ * Copyright 2016 Connectify, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built by Shrikant.
+ */
+body{background-color:#fff
+	font: normal normal normal 1.5 sans-serif}
 /*!
  *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)

@@ -11,7 +11,7 @@
   angular
   	.module('ConnectifyWeb')
     .constant('CONSTANTS', {
-      'API_URL': 'http://localhost/connectify/'
+      'API_URL': 'http://192.168.0.22:3000/connectifyapi/'
     });
 
 
