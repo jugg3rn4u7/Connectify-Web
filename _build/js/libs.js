@@ -1,1 +1,1 @@
-!function(n){n(document).ready(function(){})}(jQuery);
+!function(n){n(document).ready(function(){n("#fb-login").on("click",function(){FB.login(function(n){n.authResponse&&console.log("FB Login")})})})}(jQuery);

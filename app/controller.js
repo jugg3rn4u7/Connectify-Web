@@ -91,4 +91,59 @@
       });
   }
 
+  angular
+    .module('ConnectifyWeb')
+    .controller('LoginController', LoginController);
+
+  LoginController.$inject = ['FacebookService', '$rootScope', '$window'];
+
+  function LoginController(facebookService, $rootScope, $window) {
+
+    // Facebook user authentication
+    $rootScope.user = {};
+
+    $window.fbAsyncInit = function() {
+
+      FB.init({
+        
+        appId: '1628447944135801',
+
+        status: true,
+
+        cookie: true,
+
+        xfbml: true,
+
+        version: 'v2.6'
+
+      });
+
+      facebookService.watchLoginChange();
+      console.log(facebookService.getUserInfo());
+
+    };
+
+  }
+
+
+  angular
+    .module('ConnectifyWeb')
+    .controller('RegisterController', RegisterController);
+
+  RegisterController.$inject = ['$rootScope', '$window'];
+
+  function RegisterController($rootScope, $window) {
+
+   /**
+     * Register - Backend API
+     * @return {Object} Returned object
+     */
+    // QueryService.query('POST', 'register', {}, {})
+    //   .then(function(ovocie) {
+    //     self.ovocie = ovocie.data;
+    //     console.log("Hello response: ", self.ovocie);
+    //   });
+
+  }
+
 })();

@@ -6,6 +6,14 @@
 	 * 
 	 */
   $(document).ready(function() {
+
+  	$("#fb-login").on("click", function () {
+		FB.login(function(response) {
+			if (response.authResponse) {
+				console.log("FB Login");
+			}
+		});
+	});
     
   });
 

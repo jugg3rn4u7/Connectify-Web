@@ -1,54 +1,72 @@
 ;(function() {
 
-
   /**
-   * Sample factory
-   *
-   * You can fetch here some data from API and the use them
-   * in controller
-   * 
+   * Facebook factory
    */
+   
   angular
     .module('ConnectifyWeb')
-    .factory('getDataFromAPI', getDataFromAPI);
+    .factory('FacebookService', getDataFromFacebook);
 
-  getDataFromAPI.$inject = ['$http', 'LocalStorage'];
+  getDataFromFacebook.$inject = ['$rootScope', '$location', '$q'];
 
 
   ////////////
 
 
-  function getDataFromAPI($http, LocalStorage) {
+  function getDataFromFacebook($rootScope, $location, $q) {
 
-    return {
-      loadData: loadData
-    };
+    var _self = this;
 
+    _self.getUserInfo = function() {
+        
+        var deferred = $q.defer();
+        
+        FB.api('/me', function(response) {
+            if (!response || response.error) {
+                  deferred.reject('Error occured');
+            } else {
+                  deferred.resolve(response);
+            }
+        });
+        
+        return deferred.promise;
+    } // End of getUserInfo
 
-    ////////////  function definitions
+    _self.watchLoginChange = function() {
+        
+        FB.Event.subscribe('auth.authResponseChange', function(res) {
 
+            if (res.status === 'connected') {
 
-    /**
-     * Load articles from GetPocket API
-     * @return {Object} Articles object
-     */
-    // var request = {
-    //   consumer_key: 'xxxx',
-    //   access_token: 'xxxx',
-    //   sort: 'newest',
-    //   count: 5
-    // };
+              console.log("User is connected.");
 
-    // return $http({
-    //   method: 'GET',
-    //   url: API.url + 'v3/get',
-    //   params: request
-    // }).then(function(articles) {
-    //   return articles.data;
-    // })
-    // .catch(function(error) {
-    //   return error;
-    // });
+            } else {
+
+              /*
+               The user is not logged to the app, or into Facebook:
+               destroy the session on the server.
+              */
+              $location.url('/login');
+
+            }
+
+        });
+
+    } // End of watchLoginChange
+
+    _self.logout = function() {
+
+      FB.logout(function(response) {
+        $rootScope.$apply(function() {
+          $rootScope.user = {};
+        });
+      });
+
+    } // End of logout
+
+    return _self;
+
   }
 
 

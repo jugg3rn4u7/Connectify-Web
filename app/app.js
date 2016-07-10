@@ -39,9 +39,14 @@
     // routes
     $routeProvider
       .when('/', {
-        templateUrl: 'views/home.html',
-        controller: 'MainController',
-        controllerAs: 'main'
+        templateUrl: 'views/login.html',
+        controller: 'LoginController',
+        controllerAs: 'login'
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'RegisterController',
+        controllerAs: 'register'
       })
       .otherwise({
         redirectTo: '/'
@@ -99,7 +104,20 @@
 
     // put here everything that you need to run on page load
 
-  }
+    (function(d, s, id) {
+       
+       var js, fjs = d.getElementsByTagName(s)[0];
+       
+       if (d.getElementById(id)) {return;}
+       
+       js = d.createElement(s); js.id = id;
+       
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       
+       fjs.parentNode.insertBefore(js, fjs);
 
+     } (document, 'script', 'facebook-jssdk'));
+
+  }
 
 })();
