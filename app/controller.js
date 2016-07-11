@@ -130,19 +130,37 @@
     .module('ConnectifyWeb')
     .controller('RegisterController', RegisterController);
 
-  RegisterController.$inject = ['$rootScope', '$window'];
+  RegisterController.$inject = ['$rootScope', '$window', 'QueryService'];
 
-  function RegisterController($rootScope, $window) {
+  function RegisterController($rootScope, $window, QueryService) {
 
-   /**
-     * Register - Backend API
-     * @return {Object} Returned object
-     */
-    // QueryService.query('POST', 'register', {}, {})
-    //   .then(function(ovocie) {
-    //     self.ovocie = ovocie.data;
-    //     console.log("Hello response: ", self.ovocie);
-    //   });
+    $("#register-user").on("click", function () {
+
+        $('#password-error').empty();
+    
+        var areaCode = $('#area-code').val();
+        var prefix = $('#prefix').val();
+        var lineNumber = $('#line-number').val();
+
+        var phoneNumber = areaCode + "-" + prefix + "-" + lineNumber;
+        var password = $('#password').val(); 
+        var confirmPassword = $('#password-confirm').val();
+
+        if (password != confirmPassword ) {
+           $('#password-error').html("Passwords don't match");
+           return;
+        }
+
+        /**
+         * Register - Backend API
+         * @return {Object} Returned object
+         */
+        QueryService.query('POST', 'register', {}, { phoneNumber: phoneNumber, password: password })
+          .then(function(ovocie) {
+            self.ovocie = ovocie.data;
+            console.log("Register: ", self.ovocie);
+          });
+    });
 
   }
 
