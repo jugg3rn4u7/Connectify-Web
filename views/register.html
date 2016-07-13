@@ -1,40 +1,23 @@
-<section id="registration">
+<section id="registration" ng-controller="RegisterController as registerController">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-4"></div>
 			<div class="col-lg-4">
 				<form data-toggle="validator" role="form" autocomplete="off">
 				  <div class="form-group">
-				    <label for="phone-number">Phone Number</label>
-				    <div class="form-group">
-				    	<div class="container-fluid">
-				    		<div class="row">
-				    			<div class="col-lg-4">
-				    				<input type="text" placeholder="Area Code" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="area-code" required> 
-				    			</div>
-				    			<div class="col-lg-4">
-				    				<input type="text" placeholder="Prefix" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="prefix" required>
-				    			</div>
-				    			<div class="col-lg-4">
-				    				<input type="text" placeholder="Line Number" pattern="^([1-9][0-9]*)$" maxlength="4" class="form-control" id="line-number" required>
-				    			</div>
-				    		</div>
-				    	</div>
-				    </div>
-				    <div class="form-group">
-				    	<code-verify></code-verify>
-				    </div>
+				    <code-verify></code-verify>
 				  </div>
 				  <div class="form-group">
 				    <label for="password">Password</label>
-				    <input type="password" data-minlength="6" class="form-control" id="password" placeholder="Enter your password" required>
+				    <input type="password" data-minlength="6" class="form-control" id="password" placeholder="Enter your password" required ng-model="user.password" ng-change="checkMatch()">
 				    <div class="help-block">Minimum of 6 characters</div>
 				  </div>
 				  <div class="form-group">
-				      <input type="password" class="form-control" id="password-confirm" placeholder="Confirm" required>
-				      <div class="help-block with-errors" id="password-error"></div>
+				      <input type="password" class="form-control" id="password-confirm" placeholder="Confirm" required ng-model="user.passwordConfirm" ng-change="checkMatch()"> 
+				      <div class="help-block with-errors" id="password-error" ng-bind-html="passwordError"></div>
 				  </div>
-				  <button type="submit" class="btn btn-primary" id="register-user">Register</button>
+				  <button type="submit" class="btn btn-primary" id="register-user" ng-click="registerUser()" ng-model="canRegister" ng-disabled="canRegister">Register</button>
+				  <div class="help-block" id="registration-status" ng-bind-html="registrationStatus"></div>
 				</form>
 			</div>
 			<div class="col-lg-4"></div>

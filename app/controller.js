@@ -130,26 +130,39 @@
     .module('ConnectifyWeb')
     .controller('RegisterController', RegisterController);
 
-  RegisterController.$inject = ['$rootScope', '$window', 'QueryService'];
+  RegisterController.$inject = ['$rootScope','$scope', '$window', 'QueryService'];
 
-  function RegisterController($rootScope, $window, QueryService) {
+  function RegisterController($rootScope, $scope, $window, QueryService) {
 
-    $("#register-user").on("click", function () {
+    $scope.passwordError = "";
 
-        $('#password-error').empty();
-    
-        var areaCode = $('#area-code').val();
-        var prefix = $('#prefix').val();
-        var lineNumber = $('#line-number').val();
+    $scope.user = {
+      password: "",
+      passwordConfirm: ""
+    };
 
-        var phoneNumber = areaCode + "-" + prefix + "-" + lineNumber;
-        var password = $('#password').val(); 
-        var confirmPassword = $('#password-confirm').val();
+    $scope.canRegister = ""
 
-        if (password != confirmPassword ) {
-           $('#password-error').html("Passwords don't match");
-           return;
+    $scope.checkMatch = function () {
+        if ( $scope.user.password != $scope.user.passwordConfirm ) {
+            //$scope.passwordError = "Passwords don't match";
+            console.log("Passwords don't match");
+        } else {
+            //$scope.passwordError = "";
+            console.log("Passwords match");
+            if( $rootScope.userVerified ) {
+                console.log("verified");
+               $scope.canRegister = "checked";
+            } else {console.log("unverified");
+               $scope.canRegister = "";
+            }
         }
+    };
+
+    $scope.registerUser = function() {
+
+        var phoneNumber = $rootScope.fullNumber;
+        var password = $scope.user.password;
 
         /**
          * Register - Backend API
@@ -160,7 +173,7 @@
             self.ovocie = ovocie.data;
             console.log("Register: ", self.ovocie);
           });
-    });
+    };
 
   }
 

@@ -1,19 +1,43 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-lg-12">
-			<label>Verfication</label>
-			<form class="form-inline">
-			  <div class="form-group">
-				<label class="sr-only" for="enter-code">Enter Code</label>
-				<input type="text" class="form-control" maxlength="5" pattern="[0-9]" placeholder="Enter Code" id="enter-code">
-			  </div>
-			  <div class="form-group">
-			  	<div class="btn-group" role="group">
-				  <button id="send-code" class="btn btn-default">Send Code</button>
-				  <button id="verify" class="btn btn-primary">Verify Code</button>
-				</div>
-			  </div>
-			</form>
+<div class="form-group" ng-controller="PhoneNumberController">
+	<label for="phone-number">Phone Number</label>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4">
+				<input type="text" placeholder="Area Code" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="area-code" required ng-model="phoneNumber.areaCode" ng-change="change()"> 
+			</div>
+			<div class="col-lg-4">
+				<input type="text" placeholder="Prefix" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="prefix" required ng-model="phoneNumber.prefix" ng-change="change()">
+			</div>
+			<div class="col-lg-4">
+				<input type="text" placeholder="Line Number" pattern="^([1-9][0-9]*)$" maxlength="4" class="form-control" id="line-number" required ng-model="phoneNumber.lineNumber" ng-change="change()">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="help-block with-errors" id="phone-number-error" ng-bind-html="phoneNumberError"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-group" ng-controller="CodeVerificationController">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<label>Verification</label>
+				<form class="form-inline">
+				  <div class="form-group">
+					<label class="sr-only" for="enter-code">Enter Code</label>
+					<input type="text" class="form-control" maxlength="5" pattern="^([1-9][0-9]*)$" placeholder="Enter Code" id="enter-code" ng-model="code">
+					<div class="help-block" id="verified-status" ng-bind-html="verifiedStatus"></div>
+				  </div>
+				  <div class="form-group">
+				  	<div class="btn-group" role="group">
+					  <button id="send-code" class="btn btn-default" ng-click="sendCode()">Send Code</button>
+					  <button id="verify" class="btn btn-primary" ng-click="verifyCode()">Verify Code</button>
+					</div>
+				  </div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
