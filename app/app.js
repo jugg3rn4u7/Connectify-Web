@@ -90,6 +90,13 @@
     };
   }
 
+  angular.module('ConnectifyWeb')
+    .filter('to_trusted', ['$sce', function($sce){
+        return function(text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);
+
 
   /**
    * Run block

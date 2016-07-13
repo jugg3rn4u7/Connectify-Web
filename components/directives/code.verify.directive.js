@@ -44,8 +44,12 @@
         QueryService.query('POST', 'send-code', {}, { phoneNumber: phoneNumber })
           .then(function(ovocie) {
             self.ovocie = ovocie.data;
-            console.log("Send Code: ", self.ovocie);
-            $rootScope.userVerified = true;
+            var result = self.ovocie["result"];
+            if(result == "ok") {
+              $rootScope.verifiedStatus = "A code has been sent to you phone. Please enter the code above and click 'Verify Code'.";
+            } else {
+              $rootScope.verifiedStatus = "Oops ! We could not send verification code to this number. Please check if the number is correct.";
+            }
           });
       };
 
@@ -61,13 +65,12 @@
         QueryService.query('POST', 'verify-code', {}, { phoneNumber: phoneNumber, code: code })
           .then(function(ovocie) {
             self.ovocie = ovocie.data;
-            console.log("Verify Code: ", self.ovocie);
             var data = self.ovocie;
-            $rootScope.userVerified = true;
             if(data["result"] == "verified") {
-               $scope.verifiedStatus = "Your phone number has been verified !"
+               $rootScope.userVerified = true;
+               $scope.verifiedStatus = "Your phone number has been verified !";
             } else {
-               $scope.verifiedStatus = "Oops ! We were not able to verify your number. Please try again..."
+               $scope.verifiedStatus = "Oops ! We were not able to verify your number. Please try again...";
             }
           });
       };

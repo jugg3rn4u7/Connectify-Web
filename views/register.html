@@ -14,10 +14,10 @@
 				  </div>
 				  <div class="form-group">
 				      <input type="password" class="form-control" id="password-confirm" placeholder="Confirm" required ng-model="user.passwordConfirm" ng-change="checkMatch()"> 
-				      <div class="help-block with-errors" id="password-error" ng-bind-html="passwordError"></div>
+				      <div class="help-block with-errors" id="password-error" ng-bind-html="passwordError | to_trusted"></div>
 				  </div>
 				  <button type="submit" class="btn btn-primary" id="register-user" ng-click="registerUser()" ng-model="canRegister" ng-disabled="canRegister">Register</button>
-				  <div class="help-block" id="registration-status" ng-bind-html="registrationStatus"></div>
+				  <div class="help-block" id="registration-status" ng-bind-html="registrationStatus | to_trusted"></div>
 				</form>
 			</div>
 			<div class="col-lg-4"></div>

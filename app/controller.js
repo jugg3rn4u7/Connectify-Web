@@ -125,7 +125,6 @@
 
   }
 
-
   angular
     .module('ConnectifyWeb')
     .controller('RegisterController', RegisterController);
@@ -145,16 +144,14 @@
 
     $scope.checkMatch = function () {
         if ( $scope.user.password != $scope.user.passwordConfirm ) {
-            //$scope.passwordError = "Passwords don't match";
-            console.log("Passwords don't match");
+            $scope.passwordError = "Passwords don't match...";
         } else {
-            //$scope.passwordError = "";
-            console.log("Passwords match");
-            if( $rootScope.userVerified ) {
-                console.log("verified");
+            $scope.passwordError = "Passwords match !";
+            if( !!$rootScope.userVerified ) {
                $scope.canRegister = "checked";
-            } else {console.log("unverified");
+            } else {
                $scope.canRegister = "";
+               $rootScope.verifiedStatus = "Your phone number has not been verified. Please click 'Send Code' to send verification code your number !";
             }
         }
     };
@@ -171,7 +168,12 @@
         QueryService.query('POST', 'register', {}, { phoneNumber: phoneNumber, password: password })
           .then(function(ovocie) {
             self.ovocie = ovocie.data;
-            console.log("Register: ", self.ovocie);
+            var result = self.ovocie["result"];
+            if(result == "ok") {
+               $scope.registrationStatus = "You have been registered !";
+            } else {
+               $scope.registrationStatus = "Oops ! We were not able to register you. Please try again...";
+            }
           });
     };
 
