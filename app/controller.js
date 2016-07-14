@@ -119,7 +119,6 @@
       });
 
       facebookService.watchLoginChange();
-      console.log(facebookService.getUserInfo());
 
     };
 
@@ -176,6 +175,17 @@
             }
           });
     };
+
+  }
+
+
+  angular
+    .module('ConnectifyWeb')
+    .controller('ManageProfileController', ManageProfileController);
+
+  ManageProfileController.$inject = ['$rootScope', '$window'];
+
+  function ManageProfileController($rootScope, $window) {
 
   }
 

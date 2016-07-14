@@ -3,13 +3,13 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-4">
-				<input type="text" placeholder="Area Code" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="area-code" required ng-model="phoneNumber.areaCode" ng-change="change()"> 
+				<input type="text" placeholder="Area Code" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="area-code" required ng-model="phoneNumber.areaCode" ng-change="change()" ng-blur="checkNumber()"> 
 			</div>
 			<div class="col-lg-4">
-				<input type="text" placeholder="Prefix" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="prefix" required ng-model="phoneNumber.prefix" ng-change="change()">
+				<input type="text" placeholder="Prefix" pattern="^([1-9][0-9]*)$" maxlength="3" class="form-control" id="prefix" required ng-model="phoneNumber.prefix" ng-change="change()" ng-blur="checkNumber()">
 			</div>
 			<div class="col-lg-4">
-				<input type="text" placeholder="Line Number" pattern="^([1-9][0-9]*)$" maxlength="4" class="form-control" id="line-number" required ng-model="phoneNumber.lineNumber" ng-change="change()">
+				<input type="text" placeholder="Line Number" pattern="^([1-9][0-9]*)$" maxlength="4" class="form-control" id="line-number" required ng-model="phoneNumber.lineNumber" ng-change="change()" ng-blur="checkNumber()">
 			</div>
 		</div>
 		<div class="row">

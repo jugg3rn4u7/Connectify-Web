@@ -48,6 +48,11 @@
         controller: 'RegisterController',
         controllerAs: 'register'
       })
+      .when('/manage-profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ManageProfileController',
+        controllerAs: 'manage_profile'
+      })
       .otherwise({
         redirectTo: '/'
       });

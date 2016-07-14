@@ -6,9 +6,9 @@
     .module('ConnectifyWeb')
     .controller('PhoneNumberController', PhoneNumberController);
 
-  PhoneNumberController.$inject = ['$rootScope', '$scope'];
+  PhoneNumberController.$inject = ['$rootScope', '$scope', 'QueryService'];
 
-  function PhoneNumberController($rootScope, $scope) {
+  function PhoneNumberController($rootScope, $scope, QueryService) {
 
     var _areaCode = 0;
     var _prefix = 0;
@@ -22,6 +22,21 @@
 
     $scope.change = function () {
         $rootScope.fullNumber = $scope.phoneNumber.areaCode + "-" + $scope.phoneNumber.prefix + "-" + $scope.phoneNumber.lineNumber;
+    };
+
+    $scope.checkNumber = function () {
+        var phoneNumber = $rootScope.fullNumber;
+
+        QueryService.query('POST', 'check-number', {}, { phoneNumber: phoneNumber })
+          .then(function(ovocie) {
+            self.ovocie = ovocie.data;
+            var result = self.ovocie["result"];
+            if(result == "exists") {
+              $scope.phoneNumberError = "You are already have an account. Please login with your credentials.";
+            } else {
+              $scope.phoneNumberError = "";
+            }
+          });
     };
   }
 
