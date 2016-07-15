@@ -65,5 +65,156 @@
 			</div>
 			<div class="col-lg-4"></div>
 		</div>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<table class="table table-borderless">
+					<tbody>
+						<tr>
+							<td><label>Synchronize with Facebook account</label></td>
+							<td><button class="btn btn-default" id="facebook-sync">Link</button></td>
+						</tr>
+						<tr>
+							<td><label>Synchronize with Google account</label></td>
+							<td><button class="btn btn-default" id="google-sync">Link</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<div class="page-header">
+  					<h4>Email</h4>
+				</div>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<form>
+				  <div class="form-group">
+				    <table class="table table-borderless">
+						<tbody>
+							<tr>
+								<td><input type="email" class="form-control" id="primary-email" placeholder="Enter email address"></td>
+								<td><button class="btn btn-default" id="primary-email-default">Set Default</button></td>
+							</tr>
+							<tr>
+								<td><input type="email" class="form-control" id="secondary-email" placeholder="Enter email address"></td>
+								<td><button class="btn btn-default" id="secondary-email-default">Set Default</button></td>
+							</tr>
+						</tbody>
+					</table>
+				  </div>
+				</form>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<div class="page-header">
+  					<h4>Personal Contact Number</h4>
+				</div>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<form data-toggle="validator" role="form" autocomplete="off">
+				  <div class="form-group">
+				    <code-verify></code-verify>
+				  </div>
+				</form>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<div class="page-header">
+  					<h4>Notifications</h4>
+				</div>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<form>
+				  <div class="form-group">
+				    <table class="table table-borderless">
+				    	<thead>
+				    		<tr>
+								<td>&nbsp;</td>
+								<td>
+									<label><span class="glyphicon glyphicon-phone gi-2x"></span></label>
+								</td>
+								<td>
+									<label><span class="glyphicon glyphicon-envelope gi-2x"></span></label>
+								</td>
+							</tr>
+				    	</thead>
+						<tbody>
+							<tr>
+								<td><label>When someone send you a request</label></td>
+								<td><input type="checkbox"></td>
+								<td><input type="checkbox"></td>
+							</tr>
+							<tr>
+								<td><label>When someone sends you a message</label></td>
+								<td><input type="checkbox"></td>
+								<td><input type="checkbox"></td>
+							</tr>
+						</tbody>
+					</table>
+				  </div>
+				</form>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</section>
+<section>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<div class="page-header">
+  					<h4>Account Deletion</h4>
+				</div>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<form>
+				  <div class="form-group">
+				    <label for="phone-number">To permanently delete your account type your phone number and click delete.</label>
+				    <input type="text" class="form-control" id="phone-number" placeholder="Enter your phone number">
+				  </div>
+				  <button id="delete-account" class="btn btn-danger">Delete</button>
+				</form>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
 	</div>
 </section>

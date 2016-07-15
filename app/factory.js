@@ -40,6 +40,8 @@
             if (res.status === 'connected') {
 
               console.log("User is connected.");
+              $location.path('/manage-profile').replace();
+              $rootScope.$apply();
 
             } else {
 
@@ -47,7 +49,8 @@
                The user is not logged to the app, or into Facebook:
                destroy the session on the server.
               */
-              $location.url('/login');
+              $location.path('/login').replace();
+              $rootScope.$apply();
 
             }
 

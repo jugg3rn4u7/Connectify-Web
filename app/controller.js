@@ -95,9 +95,9 @@
     .module('ConnectifyWeb')
     .controller('LoginController', LoginController);
 
-  LoginController.$inject = ['FacebookService', '$rootScope', '$window'];
+  LoginController.$inject = ['FacebookService', '$rootScope', '$window', '$location'];
 
-  function LoginController(facebookService, $rootScope, $window) {
+  function LoginController(facebookService, $rootScope, $window, $location) {
 
     // Facebook user authentication
     $rootScope.user = {};
@@ -119,6 +119,8 @@
       });
 
       facebookService.watchLoginChange();
+      $location.path('/manage-profile').replace();
+      $rootScope.$apply();
 
     };
 
