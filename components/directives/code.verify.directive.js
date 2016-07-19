@@ -97,7 +97,7 @@
 
   CodeVerification.$inject = ['$rootScope', '$window'];
 
-  function CodeVerification($rootScope, $window, QueryService) {
+  function CodeVerification($rootScope, $window) {
 
     // Definition of directive
     var directiveDefinitionObject = {

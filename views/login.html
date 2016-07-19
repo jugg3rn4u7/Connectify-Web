@@ -1,4 +1,4 @@
-<div class="container-fuild">
+<div class="container-fuild" ng-controller="LoginController as l">
 	<div class="row">
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
@@ -8,18 +8,18 @@
 					<form>
 					  <div class="form-group">
 					    <label for="phone-number">Phone Number</label>
-					    <input type="tel" class="form-control" id="phone-number" placeholder="Enter your phone number">
+					    <input type="tel" class="form-control" id="phone-number" placeholder="Enter your phone number" ng-model="user.phoneNumber">
 					  </div>
 					  <div class="form-group">
 					    <label for="password">Password</label>
-					    <input type="password" class="form-control" id="password" placeholder="Enter your password">
+					    <input type="password" class="form-control" id="password" placeholder="Enter your password" ng-model="user.password">
 					  </div>
 					  <div class="form-group">
 					    <label for="register"><p class="help-block">Don't have an account ?</p></label>
 					    <a href="#/register">Register</a>
 					  </div>
 					  <div class="form-group">
-					  	 <button type="submit" class="btn btn-primary btn-login">login</button>
+					  	 <button ng-click="login()" class="btn btn-primary btn-login">login</button>
 					  </div>
 					</form>
 				</div>

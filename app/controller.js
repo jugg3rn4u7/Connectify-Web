@@ -95,9 +95,34 @@
     .module('ConnectifyWeb')
     .controller('LoginController', LoginController);
 
-  LoginController.$inject = ['FacebookService', '$rootScope', '$window', '$location'];
+  LoginController.$inject = ['FacebookService', '$rootScope', '$scope', '$window', '$location', 'QueryService', 'md5'];
 
-  function LoginController(facebookService, $rootScope, $window, $location) {
+  function LoginController(facebookService, $rootScope, $scope, $window, $location, QueryService, md5) {
+
+    $scope.user = {
+      phoneNumber: "",
+      password: ""
+    };
+
+    $scope.login = function () {
+
+       var phoneNumber = $scope.user.phoneNumber;
+       var password = $scope.user.password;
+       var salt = md5.createHash(phoneNumber + "_" + password)
+
+       QueryService.query('POST', 'authenticate', {}, { salt: salt })
+          .then(function(ovocie) {
+            self.ovocie = ovocie.data;
+            var result = self.ovocie["result"];
+            if(result == "ok") {
+                console.log("You have been logged in !");
+                $location.path('/manage-profile').replace();
+                $rootScope.$apply();
+            } else {
+               console.log("Oops ! Your credentials are incorrect. Please try again...");
+            }
+          });
+    };
 
     // Facebook user authentication
     $rootScope.user = {};
@@ -185,10 +210,59 @@
     .module('ConnectifyWeb')
     .controller('ManageProfileController', ManageProfileController);
 
-  ManageProfileController.$inject = ['$rootScope', '$window'];
+  ManageProfileController.$inject = ['$rootScope', '$scope'];
 
-  function ManageProfileController($rootScope, $window) {
+  function ManageProfileController($rootScope, $scope) {
 
-  }
+  };
+
+angular
+    .module('ConnectifyWeb')
+    .controller('UploadController', UploadController);
+
+  UploadController.$inject = ['$scope', '$timeout', 'CONSTANTS', '$http'];
+
+  function UploadController($scope, $timeout, CONSTANTS, $http) {
+
+    var fileDialog = angular.element('#browse-avatar');
+            
+    $scope.getDialog = function () {
+      $timeout(function() {
+        fileDialog.trigger('click');
+      }, 100);
+    };
+
+    //an array of files selected
+    $scope.file = {};
+
+    //listen for the file selected event
+    $scope.$on("fileSelected", function (event, args) {
+        $scope.$apply(function () {            
+            //add the file object to the scope's file
+            $scope.file = args.file;
+        });
+    });
+
+    $scope.submit = function () {
+
+        $http({
+            method: 'POST',
+            url: CONSTANTS.API_URL + "upload-avatar",
+            headers: { 'Content-Type': false },
+            transformRequest: function (data) {
+                var formData = new FormData();
+                formData.append("file", data.file);
+                return formData;
+            },
+            data: { file: $scope.file }
+        }).
+        success(function (data, status, headers, config) {
+            console.log("success!");
+        }).
+        error(function (data, status, headers, config) {
+            console.log("failed!");
+        });
+    };       
+  };
 
 })();

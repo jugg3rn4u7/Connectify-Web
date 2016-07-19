@@ -17,7 +17,7 @@
    */
   angular
     .module('ConnectifyWeb', [
-      'ngRoute'
+      'ngRoute', 'angular-md5'
     ])
     .config(config);
 
@@ -58,6 +58,7 @@
       });
 
     $httpProvider.interceptors.push('authInterceptor');
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|ftp|blob):|data:image\//);
 
   }
 

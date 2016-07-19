@@ -57,3 +57,7 @@ div.custom-fb-login-img:hover {
     padding-left: 0;
     margin-bottom: 20px;
 }
+
+#browse-avatar {
+    cursor: pointer;
+}
