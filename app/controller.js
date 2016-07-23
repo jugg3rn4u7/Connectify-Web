@@ -95,9 +95,9 @@
     .module('ConnectifyWeb')
     .controller('LoginController', LoginController);
 
-  LoginController.$inject = ['FacebookService', '$rootScope', '$scope', '$window', '$location', 'QueryService', 'md5'];
+  LoginController.$inject = ['FacebookService', '$rootScope', '$scope', '$window', '$location', 'QueryService', 'md5', 'Session'];
 
-  function LoginController(facebookService, $rootScope, $scope, $window, $location, QueryService, md5) {
+  function LoginController(facebookService, $rootScope, $scope, $window, $location, QueryService, md5, Session) {
 
     $scope.user = {
       phoneNumber: "",
@@ -114,10 +114,13 @@
           .then(function(ovocie) {
             self.ovocie = ovocie.data;
             var result = self.ovocie["result"];
-            if(result == "ok") {
+            if(result == "valid") {
                 console.log("You have been logged in !");
                 $location.path('/manage-profile').replace();
-                $rootScope.$apply();
+                if(!$scope.$$phase) {
+                  $rootScope.$apply();
+                } 
+                Session.new(salt);
             } else {
                console.log("Oops ! Your credentials are incorrect. Please try again...");
             }
@@ -210,13 +213,13 @@
     .module('ConnectifyWeb')
     .controller('ManageProfileController', ManageProfileController);
 
-  ManageProfileController.$inject = ['$rootScope', '$scope'];
+  ManageProfileController.$inject = ['$rootScope', '$scope', 'Session'];
 
-  function ManageProfileController($rootScope, $scope) {
-
+  function ManageProfileController($rootScope, $scope, Session) {
+      console.log(Session.data);
   };
 
-angular
+  angular
     .module('ConnectifyWeb')
     .controller('UploadController', UploadController);
 
@@ -230,6 +233,10 @@ angular
       $timeout(function() {
         fileDialog.trigger('click');
       }, 100);
+    };
+
+    $scope.image = function () {
+
     };
 
     //an array of files selected
