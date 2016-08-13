@@ -1,5 +1,5 @@
 <section>
-	<div class="container-fluid">
+	<div class="container-fluid" ng-controller="ManageProfileController">
 		<div class="row">
 			<div class="col-lg-4"></div>
 			<div class="col-lg-4">
@@ -14,27 +14,19 @@
 			<div class="col-lg-4">
 				<div class="row">
 					<div class="col-lg-6">
-					    <form ng-controller="UploadController" method="POST" id="profile-picture" enctype="multipart/form-data">
+					    <form flow-init="config" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
 					    	<div class="form-group">
-					    		<button ng-click="getDialog()">
-							    	<img check-image ng-src="data:image/PNG;base64,{{image}}" alt="Avatar" class="img-thumbnail img-responsive">
-							    </button>
+							    <img id="profile-picture" flow-img="$flow.files[0]" class="img-thumbnail img-responsive profile-pic-default">
 							</div>
 						  	<div class="form-group">
 						  		<div class="btn-group center-block">
 									<button type="button" class="btn btn-default">
-									  	<span class="glyphicon glyphicon-remove"></span>
+									  	<span class="glyphicon glyphicon-remove" ng-click="$flow.cancel()"></span>
 									</button>
-									<button type="button" class="btn btn-default" ng-click="getDialog()">
+									<button type="button" class="btn btn-default" flow-files-submitted="$flow.upload()" flow-btn="">
 									  	<span class="glyphicon glyphicon-folder-open"></span>
 									</button>
-									<button ng-click="submit()" class="btn btn-default">
-									  	<span class="glyphicon glyphicon-floppy-disk"></span>
-									</button>
 								</div> 
-						  	</div>
-						  	<div class="form-group">
-						  		<input id="browse-avatar" style="visibility:hidden;" type="file" file-upload />
 						  	</div>
 						</form>
 					</div>
@@ -42,15 +34,15 @@
 						<form>
 						  <div class="form-group">
 						    <label for="display-name">Display Name</label>
-						    <input type="text" class="form-control" id="display-name" placeholder="Eg. Pikachu">
+						    <input type="text" class="form-control" ng-model="display_name" placeholder="Eg. Pikachu">
 						  </div>
 						  <div class="form-group">
 						    <label for="first-name">First Name</label>
-						    <input type="text" class="form-control" id="first-name" placeholder="Elon">
+						    <input type="text" class="form-control" ng-model="first_name" placeholder="Elon">
 						  </div>
 						  <div class="form-group">
 						    <label for="first-name">Last Name</label>
-						    <input type="text" class="form-control" id="last-name" placeholder="Musk">
+						    <input type="text" class="form-control" ng-model="last_name" placeholder="Musk">
 						  </div>
 						</form>
 					</div>

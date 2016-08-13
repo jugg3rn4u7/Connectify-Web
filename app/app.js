@@ -17,13 +17,13 @@
    */
   angular
     .module('ConnectifyWeb', [
-      'ngRoute', 'angular-md5'
+      'ngRoute', 'angular-md5', 'flow'
     ])
     .config(config);
 
   // safe dependency injection
   // this prevents minification issues
-  config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider', '$compileProvider'];
+  config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider', '$compileProvider', '$provide'];
 
   /**
    * App routing
@@ -32,7 +32,7 @@
    * into separate file
    * 
    */
-  function config($routeProvider, $locationProvider, $httpProvider, $compileProvider) {
+  function config($routeProvider, $locationProvider, $httpProvider, $compileProvider, $provide) {
 
     $locationProvider.html5Mode(false);
 
@@ -53,12 +53,46 @@
         controller: 'ManageProfileController',
         controllerAs: 'manage_profile'
       })
+      .when('/invite-friends', {
+        templateUrl: 'views/invite-friends.html',
+        controller: 'InviteFriendsController',
+        controllerAs: 'invite_friends'
+      })
+      .when('/home', {
+        templateUrl: 'views/home.html',
+        controller: 'HomeController',
+        controllerAs: 'home'
+      })
       .otherwise({
         redirectTo: '/'
       });
 
     $httpProvider.interceptors.push('authInterceptor');
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|ftp|blob):|data:image\//);
+
+    $provide.decorator("$exceptionHandler", [ '$delegate', function($delegate) {
+            
+            return function(exception, cause) {
+                
+                $delegate(exception, cause);
+
+                var formatted = '';
+                var properties = '';
+                formatted += 'Exception: "' + exception.toString() + '"\n';
+                formatted += 'Caused by: ' + cause + '\n';
+
+                properties += (exception.message) ? 'Message: ' + exception.message + '\n' : ''
+                properties += (exception.fileName) ? 'File Name: ' + exception.fileName + '\n' : ''
+                properties += (exception.lineNumber) ? 'Line Number: ' + exception.lineNumber + '\n' : ''
+                properties += (exception.stack) ? 'Stack Trace: ' + exception.stack + '\n' : ''
+
+                if (properties) {
+                  formatted += properties;
+                }
+
+                console.log(formatted);
+            };
+        }]);
 
   }
 
@@ -96,12 +130,62 @@
     };
   }
 
-  angular.module('ConnectifyWeb')
+  angular
+    .module('ConnectifyWeb')
     .filter('to_trusted', ['$sce', function($sce){
         return function(text) {
             return $sce.trustAsHtml(text);
         };
     }]);
+
+
+  angular
+    .module('ConnectifyWeb')
+    .factory('RouteManager', getRouteManager);
+
+  getRouteManager.$inject = ['$rootScope', '$location'];
+
+  function getRouteManager($rootScope, $location) {
+
+    var route = {
+
+        nextRoute: function () {
+
+            var user_info = $rootScope.user_info;
+            var route = "";
+
+            // if visitor registered
+            if( user_info.isRegistered == 1 ) {
+
+              // if user has managed profile
+              if( user_info.hasManagedProfile == 0 ) {
+                  route = '/manage-profile';
+              } // if user has NOT managed profile
+              else if( user_info.hasManagedProfile == 1 ) {
+
+                // if user has NOT invited friends
+                if( user_info.hasInvitedFriends == 0 ) {
+                    route = '/invite-friends';
+                } else { // After everything, home page
+                  route = '/home';
+                }
+              }
+
+            } else if( user_info.isLogged == 1 ) { // if NOT logged in go HOME
+                route = '/home';
+            } else { // login page
+                route = '/';
+            }
+
+            $location.path(route).replace();
+
+            return this;
+
+        } // End of nextRoute
+    };
+
+    return route; // Route Object
+  };
 
 
   /**
@@ -114,6 +198,14 @@
   run.$inject = ['$rootScope', '$location'];
 
   function run($rootScope, $location) {
+
+    $rootScope.user_info = {
+       isLogged: 0,
+       isRegistered: 0,
+       hasManagedProfile: 0,
+       hasInvitedFriends: 0,
+       atHome: 0
+    };
 
     // put here everything that you need to run on page load
 

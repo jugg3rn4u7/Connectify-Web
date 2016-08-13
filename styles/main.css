@@ -61,3 +61,47 @@ div.custom-fb-login-img:hover {
 #browse-avatar {
     cursor: pointer;
 }
+
+.menu {
+    right: 15px!important;
+    top: 15px!important;
+    position: relative !important;
+    float: right;
+    cursor: pointer;
+}
+
+.dropdown-pull-right {
+  float: right !important;
+  right: 0;
+  left: auto;
+}
+
+.dropdown-pull-right > .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+.mini-user {
+	background-image: url("../images/default_user.png");
+	width: 20px;
+	height: 20px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.profile-pic {
+	background-image: url("");
+	width: 140px;
+	height: 115px;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.profile-pic-default {
+	background-image: url("../images/default_user.png");
+	width: 140px;
+	height: 115px;
+	background-size: contain;
+	background-repeat: no-repeat;
+}

@@ -8,13 +8,9 @@
     .module('ConnectifyWeb')
     .factory('FacebookService', getDataFromFacebook);
 
-  getDataFromFacebook.$inject = ['$rootScope', '$location', '$q'];
+  getDataFromFacebook.$inject = ['$rootScope', '$location', 'Session', 'QueryService', 'md5', '$q'];
 
-
-  ////////////
-
-
-  function getDataFromFacebook($rootScope, $location, $q) {
+  function getDataFromFacebook($rootScope, $location, Session, QueryService, md5, $q) {
 
     var _self = this;
 
@@ -26,12 +22,13 @@
             if (!response || response.error) {
                   deferred.reject('Error occured');
             } else {
+                  console.log("FB logged in: ", response);
                   deferred.resolve(response);
             }
         });
         
         return deferred.promise;
-    } // End of getUserInfo
+    }; // End of getUserInfo
 
     _self.watchLoginChange = function() {
         
@@ -40,8 +37,44 @@
             if (res.status === 'connected') {
 
               console.log("User is connected.");
+              console.log("FB connected: ", res);
+
+              var userID = res.authResponse.userID;
+              //$rootScope.session = Session.new(data.result.salt, 2);
               $location.path('/manage-profile').replace();
-              $rootScope.$apply();
+
+              // QueryService.query('POST', 'check-fb-user', {}, { userID: userID })
+              //     .then(function(ovocie) {
+                    
+              //       var data = ovocie.data;
+              //       var salt = md5.createHash(userID);
+                    
+              //       if(data.result == "valid") {
+
+              //         $rootScope.session = Session.new(salt, 2);
+              //         $location.path('/manage-profile').replace();
+                       
+              //       } else if(data.result == "invalid") {
+
+              //         QueryService.query('POST', 'fb-register', {}, { userID: userID })
+              //             .then(function(ovocie) {
+                            
+              //               var data = ovocie.data;
+                            
+              //               if(data.result.status == "ok") {
+
+              //                 $rootScope.session = Session.new(data.result.salt, 2);
+              //                 $location.path('/manage-profile').replace();
+              //               } 
+              //             });  
+
+              //       } else {
+
+              //           $location.path('/login').replace();
+
+              //       }
+
+              //     });  
 
             } else {
 
@@ -50,27 +83,23 @@
                destroy the session on the server.
               */
               $location.path('/login').replace();
-              $rootScope.$apply();
+              _self.logout();
 
             }
 
         });
 
-    } // End of watchLoginChange
+    }; // End of watchLoginChange
 
     _self.logout = function() {
 
-      FB.logout(function(response) {
-        $rootScope.$apply(function() {
-          $rootScope.user = {};
-        });
-      });
+      FB.logout();
 
-    } // End of logout
+    }; // End of logout
 
     return _self;
 
-  }
+  };
 
 
 })();

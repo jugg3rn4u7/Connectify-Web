@@ -9,32 +9,83 @@
 
   angular
     .module('ConnectifyWeb')
-    .controller('MainController', MainController);
+    .controller('LoginController', LoginController);
 
-  MainController.$inject = ['LocalStorage', 'QueryService'];
+  LoginController.$inject = ['FacebookService', '$window', '$rootScope', '$scope', '$location', 'QueryService', 'md5', 'Session'];
 
+  function LoginController(FacebookService, $window, $rootScope, $scope, $location, QueryService, md5, Session) {
+    
+    $scope.user = {
+      phoneNumber: "",
+      password: ""
+    };
 
-  function MainController(LocalStorage, QueryService) {
+    $scope.login = function () {
 
-    // 'controller as' syntax
-    var self = this;
+       var visitor_id = $rootScope.visitor_id;
+       var phoneNumber = $scope.user.phoneNumber;
+       var password = $scope.user.password;
+       var salt = md5.createHash(phoneNumber + "_" + password);
+
+       QueryService.query('POST', 'authenticate', {}, { salt: salt })
+          .then(function(ovocie) {
+            
+            self.ovocie = ovocie.data;
+            
+            var result = self.ovocie["result"];
+            
+            if(result == "valid") {
+                
+                console.log("You have been logged in !");
+
+                $rootScope.user_info.isRegistered = 1;
+                $rootScope.user_info.isLogged = 1;
+                RouteManager.nextRoute();
+
+            } else {
+               console.log("Oops ! Your credentials are incorrect. Please try again...");
+            }
+          });
+    };
+
+    $window.fbAsyncInit = function() {
+
+      FB.init({
+        
+        appId: '1628447944135801',
+
+        status: true,
+
+        cookie: true,
+
+        xfbml: true,
+
+        version: 'v2.6'
+
+      });
+
+      FacebookService.watchLoginChange();
+
+    };
+
+  };
+
+  var getVisitorInfo = function ( LocalStorage ) {
 
     var uuid = function () {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        return ('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
-        });
+        })).replace("\"", "");
     };
   
     var visitor_id = null, 
-        visit_count = 0, 
-        user_rating = null;
+        visit_count = 0;
 
     if( LocalStorage.exists() ) {
 
       visitor_id = LocalStorage.get( 'visitor_id' );
       visit_count = LocalStorage.get( 'visit_count' );
-      user_rating = LocalStorage.get( 'user_rating' );
 
       if( !visitor_id ) { // new visitor
         LocalStorage.set( 'visitor_id' , uuid());
@@ -59,7 +110,6 @@
 
       visitor_id = Cookies.get( 'visitor_id' );
       visit_count = Cookies.get( 'visit_count' );
-      user_rating = Cookies.get( 'user_rating' );
 
       if( !visitor_id ) { // new visitor; Expire cookie after a year
         Cookies.set( 'visitor_id', uuid(), { expires: 365 }); 
@@ -72,95 +122,31 @@
         Cookies.set( 'longitude', position.coords.longitude, { expires: 365 });
       });
       
-    }   
+    }  
 
-    // Update database with visit_count and user_rating; send new data to server.
-  
+      // Update database with visit_count and user_rating; send new data to server.
 
-    ////////////  function definitions
+    return {
+      visitor_id: visitor_id,
+      visit_count: visit_count
+    }; 
 
+  };
 
-    /**
-     * Hello World message
-     * @return {Object} Returned object
-     */
-    QueryService.query('GET', 'hello', {}, {})
-      .then(function(ovocie) {
-        self.ovocie = ovocie.data;
-        console.log("Hello response: ", self.ovocie);
-      });
-  }
-
-  angular
-    .module('ConnectifyWeb')
-    .controller('LoginController', LoginController);
-
-  LoginController.$inject = ['FacebookService', '$rootScope', '$scope', '$window', '$location', 'QueryService', 'md5', 'Session'];
-
-  function LoginController(facebookService, $rootScope, $scope, $window, $location, QueryService, md5, Session) {
-
-    $scope.user = {
-      phoneNumber: "",
-      password: ""
-    };
-
-    $scope.login = function () {
-
-       var phoneNumber = $scope.user.phoneNumber;
-       var password = $scope.user.password;
-       var salt = md5.createHash(phoneNumber + "_" + password)
-
-       QueryService.query('POST', 'authenticate', {}, { salt: salt })
-          .then(function(ovocie) {
-            self.ovocie = ovocie.data;
-            var result = self.ovocie["result"];
-            if(result == "valid") {
-                console.log("You have been logged in !");
-                $location.path('/manage-profile').replace();
-                if(!$scope.$$phase) {
-                  $rootScope.$apply();
-                } 
-                Session.new(salt);
-            } else {
-               console.log("Oops ! Your credentials are incorrect. Please try again...");
-            }
-          });
-    };
-
-    // Facebook user authentication
-    $rootScope.user = {};
-
-    $window.fbAsyncInit = function() {
-
-      FB.init({
-        
-        appId: '1628447944135801',
-
-        status: true,
-
-        cookie: true,
-
-        xfbml: true,
-
-        version: 'v2.6'
-
-      });
-
-      facebookService.watchLoginChange();
-      $location.path('/manage-profile').replace();
-      $rootScope.$apply();
-
-    };
-
-  }
 
   angular
     .module('ConnectifyWeb')
     .controller('RegisterController', RegisterController);
 
-  RegisterController.$inject = ['$rootScope','$scope', '$window', 'QueryService'];
+  RegisterController.$inject = ['$rootScope','$scope', 'QueryService', 'LocalStorage', 'RouteManager'];
 
-  function RegisterController($rootScope, $scope, $window, QueryService) {
+  function RegisterController($rootScope, $scope, QueryService, LocalStorage, RouteManager) {
+
+    var self = this;
+
+    var visitor_info = getVisitorInfo( LocalStorage );
+
+    $rootScope.visitor_id = visitor_info.visitor_id;
 
     $scope.passwordError = "";
 
@@ -169,7 +155,7 @@
       passwordConfirm: ""
     };
 
-    $scope.canRegister = ""
+    $scope.canRegister = "";
 
     $scope.checkMatch = function () {
         if ( $scope.user.password != $scope.user.passwordConfirm ) {
@@ -187,89 +173,66 @@
 
     $scope.registerUser = function() {
 
+        var visitor_id = $rootScope.visitor_id;
         var phoneNumber = $rootScope.fullNumber;
         var password = $scope.user.password;
-
+        
         /**
          * Register - Backend API
          * @return {Object} Returned object
          */
-        QueryService.query('POST', 'register', {}, { phoneNumber: phoneNumber, password: password })
+        QueryService.query('POST', 'register', {}, { visitor_id: visitor_id, phoneNumber: phoneNumber, password: password })
           .then(function(ovocie) {
-            self.ovocie = ovocie.data;
-            var result = self.ovocie["result"];
-            if(result == "ok") {
-               $scope.registrationStatus = "You have been registered !";
+            
+            var data = ovocie.data;
+            
+            if(data.result == "ok") {
+               $rootScope.user_info.isRegistered = 1;
+               RouteManager.nextRoute();
             } else {
                $scope.registrationStatus = "Oops ! We were not able to register you. Please try again...";
             }
           });
     };
 
-  }
+  };
 
 
   angular
     .module('ConnectifyWeb')
     .controller('ManageProfileController', ManageProfileController);
 
-  ManageProfileController.$inject = ['$rootScope', '$scope', 'Session'];
+  ManageProfileController.$inject = ['$rootScope', '$scope', 'Session', 'CONSTANTS'];
 
-  function ManageProfileController($rootScope, $scope, Session) {
-      console.log(Session.data);
-  };
+  function ManageProfileController($rootScope, $scope, Session, CONSTANTS) {
 
-  angular
-    .module('ConnectifyWeb')
-    .controller('UploadController', UploadController);
+      var data = $rootScope.session;
+      var salt = null;//data.salt;
+      var UPLOAD_URL = CONSTANTS.API_URL + "upload-avatar?salt=" + salt;
 
-  UploadController.$inject = ['$scope', '$timeout', 'CONSTANTS', '$http'];
+      $rootScope.user_info.isRegistered = 1;
+      $rootScope.user_info.isLogged = 1;
+      $rootScope.user_info.hasManagedProfile = 1;
+      //RouteManager.nextRoute();
 
-  function UploadController($scope, $timeout, CONSTANTS, $http) {
+      $scope.config = {
+          singleFile: true, 
+          target: UPLOAD_URL, 
+          testChunks: false
+      };
 
-    var fileDialog = angular.element('#browse-avatar');
-            
-    $scope.getDialog = function () {
-      $timeout(function() {
-        fileDialog.trigger('click');
-      }, 100);
-    };
+      var profilePic = angular.element("#profile-picture");
 
-    $scope.image = function () {
+      $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
+          profilePic.removeClass("profile-pic-default");
+          profilePic.addClass("profile-pic");
+      });
 
-    };
+      $scope.$on('flow::fileRemoved', function (event, $flow, flowFile) {
+          profilePic.removeClass("profile-pic");
+          profilePic.addClass("profile-pic-default");  
+      });      
 
-    //an array of files selected
-    $scope.file = {};
-
-    //listen for the file selected event
-    $scope.$on("fileSelected", function (event, args) {
-        $scope.$apply(function () {            
-            //add the file object to the scope's file
-            $scope.file = args.file;
-        });
-    });
-
-    $scope.submit = function () {
-
-        $http({
-            method: 'POST',
-            url: CONSTANTS.API_URL + "upload-avatar",
-            headers: { 'Content-Type': false },
-            transformRequest: function (data) {
-                var formData = new FormData();
-                formData.append("file", data.file);
-                return formData;
-            },
-            data: { file: $scope.file }
-        }).
-        success(function (data, status, headers, config) {
-            console.log("success!");
-        }).
-        error(function (data, status, headers, config) {
-            console.log("failed!");
-        });
-    };       
   };
 
 })();
